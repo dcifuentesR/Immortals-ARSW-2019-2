@@ -16,32 +16,50 @@ import java.util.logging.Logger;
  */
 public class Producer extends Thread {
 
-    private Queue<Integer> queue = null;
+	private Queue<Integer> queue = null;
 
-    private int dataSeed = 0;
-    private Random rand=null;
-    private final long stockLimit;
+	private int dataSeed = 0;
+	private Random rand = null;
+	private final long stockLimit;
 
-    public Producer(Queue<Integer> queue,long stockLimit) {
-        this.queue = queue;
-        rand = new Random(System.currentTimeMillis());
-        this.stockLimit=stockLimit;
-    }
+	public Producer(Queue<Integer> queue, long stockLimit) {
+		this.queue = queue;
+		rand = new Random(System.currentTimeMillis());
+		this.stockLimit = stockLimit;
+	}
 
-    @Override
-    public void run() {
-        while (true) {
+	@Override
+	public void run() {
+		while (true) {
+			produce();
+		}
+	}
 
-            dataSeed = dataSeed + rand.nextInt(100);
-            System.out.println("Producer added " + dataSeed);
-            queue.add(dataSeed);
-            
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(Producer.class.getName()).log(Level.SEVERE, null, ex);
-            }
+	/**
+	 * 
+	 */
+	public void produce() {
+		synchronized (queue) {
+			while (queue.size() == stockLimit) {
+				try {
+					System.out.println("queue is full");
+					queue.wait();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			dataSeed = dataSeed + rand.nextInt(100);
+			System.out.println("Producer added " + dataSeed);
+			queue.add(dataSeed);
 
-        }
-    }
+		}
+//            try {
+//                Thread.sleep(1000);
+//            } catch (InterruptedException ex) {
+//                Logger.getLogger(Producer.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+
+	}
+
 }
