@@ -31,27 +31,29 @@ public class Producer extends Thread {
 	@Override
 	public void run() {
 		while (true) {
-			produce();
+			try {
+				produce();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
 	/**
+	 * @throws InterruptedException 
 	 * 
 	 */
-	public void produce() {
+	public void produce() throws InterruptedException {
 		synchronized (queue) {
 			while (queue.size() == stockLimit) {
-				try {
 					System.out.println("queue is full");
 					queue.wait();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
 			}
 			dataSeed = dataSeed + rand.nextInt(100);
 			System.out.println("Producer added " + dataSeed);
 			queue.add(dataSeed);
+			queue.notifyAll();
 
 		}
 //            try {

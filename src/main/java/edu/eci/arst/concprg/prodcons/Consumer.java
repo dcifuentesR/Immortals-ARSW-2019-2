@@ -24,7 +24,12 @@ public class Consumer extends Thread {
 	@Override
 	public void run() {
 		while (true) {
-			consume();
+			try {
+				consume();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 //			try {
@@ -37,20 +42,18 @@ public class Consumer extends Thread {
 	}
 
 	/**
+	 * @throws InterruptedException 
 	 * 
 	 */
-	public void consume() {
-		while (!queue.isEmpty()) {
-
-			synchronized (queue) {
-				int elem = queue.poll();
-				System.out.println("Consumer consumes " + elem);
-
-					
-				
+	public void consume() throws InterruptedException {
+		synchronized (queue) {
+			while (queue.isEmpty()) {
+				System.out.println("queue empty");
+				queue.wait();
 			}
+			int elem = queue.poll();
+			System.out.println("Consumer consumes " + elem);
+			queue.notifyAll();
 		}
-		System.out.println("queue empty");
-		notify();
 	}
 }
