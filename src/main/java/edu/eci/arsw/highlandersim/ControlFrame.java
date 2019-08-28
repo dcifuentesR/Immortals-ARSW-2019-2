@@ -108,9 +108,6 @@ public class ControlFrame extends JFrame {
 
 		btnResume.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				/**
-				 * IMPLEMENTAR
-				 */
 				synchronized(immortals) {
 					immortals.notifyAll();
 				}
@@ -132,6 +129,18 @@ public class ControlFrame extends JFrame {
 
 		JButton btnStop = new JButton("STOP");
 		btnStop.setForeground(Color.RED);
+		btnStop.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+					for (Immortal im : immortals) {
+						im.stopImmortal();
+					}
+				
+				btnStart.setEnabled(true);
+				
+			}
+		});
 		toolBar.add(btnStop);
 
 		scrollPane = new JScrollPane();

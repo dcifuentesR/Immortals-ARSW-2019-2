@@ -7,6 +7,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Immortal extends Thread {
 
 	private boolean paused;
+	
+	private boolean stop;
 
 	private ImmortalUpdateReportCallback updateCallback = null;
 
@@ -32,7 +34,7 @@ public class Immortal extends Thread {
 
 	public void run() {
 
-		while (true) {
+		while (!stop) {
 			if(health.get() == 0) {
 				immortalsPopulation.remove(this);
 				break;
@@ -100,6 +102,10 @@ public class Immortal extends Thread {
 
 	public int getHealth() {
 		return health.get();
+	}
+	
+	public void stopImmortal() {
+		stop = true;
 	}
 
 	@Override
