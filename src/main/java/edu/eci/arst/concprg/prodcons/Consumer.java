@@ -27,17 +27,15 @@ public class Consumer extends Thread {
 			try {
 				consume();
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
+			try {
+				Thread.sleep(50);
+			} catch (InterruptedException ex) {
+				Logger.getLogger(Producer.class.getName()).log(Level.SEVERE, null, ex);
+			}
 		}
-
-//			try {
-//				Thread.sleep(500);
-//			} catch (InterruptedException ex) {
-//				Logger.getLogger(Producer.class.getName()).log(Level.SEVERE, null, ex);
-//			}
-
 		
 	}
 

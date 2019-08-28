@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Random;
 
 public class Immortal extends Thread {
+	
+	private boolean paused;
 
     private ImmortalUpdateReportCallback updateCallback=null;
     
@@ -30,6 +32,18 @@ public class Immortal extends Thread {
     public void run() {
 
         while (true) {
+        	
+        	synchronized(immortalsPopulation) {
+        		while(paused) {
+        			try {
+						immortalsPopulation.wait();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+        		}
+        		immortalsPopulation.notifyAll();
+        	}
             Immortal im;
 
             int myIndex = immortalsPopulation.indexOf(this);
@@ -65,6 +79,14 @@ public class Immortal extends Thread {
             updateCallback.processReport(this + " says:" + i2 + " is already dead!\n");
         }
 
+    }
+    
+    public void pause() {
+    	paused=true;
+    }
+    
+    public void resumeImmortal() {
+    	paused=false;
     }
 
     public void changeHealth(int v) {

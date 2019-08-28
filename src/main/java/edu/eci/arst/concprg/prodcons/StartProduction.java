@@ -16,7 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class StartProduction {
-    public final static long STOCK_LIMIT=100;
+    public final static long STOCK_LIMIT=1000000;
     
     public static void main(String[] args) {
         

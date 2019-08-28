@@ -57,7 +57,7 @@ public class Producer extends Thread {
 
 		}
 //            try {
-//                Thread.sleep(1000);
+//                Thread.sleep(100);
 //            } catch (InterruptedException ex) {
 //                Logger.getLogger(Producer.class.getName()).log(Level.SEVERE, null, ex);
 //            }
