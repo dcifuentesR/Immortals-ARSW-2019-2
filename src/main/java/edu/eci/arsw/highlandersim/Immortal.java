@@ -33,7 +33,11 @@ public class Immortal extends Thread {
 	public void run() {
 
 		while (true) {
-
+			if(health.get() == 0) {
+				immortalsPopulation.remove(this);
+				break;
+			}
+			
 			synchronized (immortalsPopulation) {
 				while (paused) {
 					try {
@@ -67,6 +71,7 @@ public class Immortal extends Thread {
 			}
 
 		}
+		
 
 	}
 
